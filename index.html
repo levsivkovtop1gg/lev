@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <canvas id="canv" width="300" height="300"></canvas>
+    <script>
+        let element_canva = document.getElementById("canv");//получаем элемент на странице - канва
+        let context_canva = element_canva.getContext("2d");//получаем контекст канвы
+        let x=150, y=150, r = 100;//задаём значения координат центра часов и их радиус
+
+        let circle = new Path2D();
+        circle.arc(x, y, r, 0, 2 * Math.PI);//рисуем окружность с центром 150пикселе;150 пикселей и радиусом 100 пикселей
+        context_canva.strokeStyle = "black";//задаём цвет границы окружности
+        context_canva.stroke(circle); //прорисовываем, делаем видимой границу окружности
+
+        let linesec = new Path2D();
+        linesec.moveTo(x,y);//первая точка отрезка - точка, от которой начинаем рисовать отрезок
+        let rSec = r - 10; //задаём длину секундной стрелки
+        let xSec = x + Math.cos(Math.PI / 2)*rSec; //вычисляем координату Х для второй точки, до которой будем рисовать отрезок
+        let ySec = y - Math.sin(Math.PI / 2)*rSec; //вычисляем координату У для второй точки, до которой будем рисовать отрезок
+        linesec.lineTo(xSec, ySec); //вторая точка отрезка - точка до которой рисуем отрезок
+        context_canva.lineWidth = 3; // задаём толщину секундной стрелки
+        context_canva.strokeStyle = "red"; // задаём цвет секундной стрелки
+        context_canva.stroke(linesec); //прорисовываем линию на канве
+
+        //добавьте здесь код для часовой и минутной стрелки
+        //стрелки должны быть чёрного цвета
+        //минутная стрелка должна быть короче секундной на 10 пикселей
+        //а часовая стрелка должна быть короче минутной ещё на 10 пикселей
+        //часы должны показывать время 20:25:00
+
+        context_canva.strokeStyle = "blue"; //задаём цвет будущих делений часов
+
+        //рисуем 60 делений на часах:
+        for (let i = 0; i<2*Math.PI; i+=Math.PI/30) { //от 0 до 2 пи через каждые пи/30 (2пи/60)
+        
+             let line = new Path2D();//рисуем деления часов
+             let r1 = r - 15;//размером 15 пикселей
+             let x1 = x + Math.cos(i)*r1; //вычисляем координату Х внутри окружности
+             let y1 = y + -Math.sin(i)*r1; //вычисляем координату У внутри окружности
+
+             let x2 = x + Math.cos(i)*r; //вычисляем координату Х на окружности
+             let y2 = y + -Math.sin(i)*r; //вычисляем координату У на окружности
+
+             line.moveTo(x1, y1); //рисуем линию от точки внутри окружности
+             line.lineTo(x2, y2); //рисуем линию до точки на окружности
+             context_canva.lineWidth = 2; //шириной 2 пикселя
+             context_canva.stroke(line); //делаем линию видимой на канве
+         }
+    </script>
+</body>
+
+</html>
